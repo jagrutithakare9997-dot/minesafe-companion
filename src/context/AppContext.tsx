@@ -2,6 +2,12 @@ import { createContext, useContext, useState, useCallback, ReactNode } from "rea
 import type { Alert } from "@/pages/Index";
 import { toast } from "sonner";
 
+export interface MessageReply {
+  id: string;
+  message: string;
+  timestamp: Date;
+}
+
 export interface EmergencyMessage {
   id: string;
   from: string;
@@ -9,6 +15,7 @@ export interface EmergencyMessage {
   location: string;
   timestamp: Date;
   read: boolean;
+  replies: MessageReply[];
 }
 
 interface AppContextType {
@@ -16,8 +23,9 @@ interface AppContextType {
   addAlert: (alert: Omit<Alert, "id" | "timestamp">) => Alert;
   resolveAlert: (id: string) => void;
   messages: EmergencyMessage[];
-  sendMessage: (msg: Omit<EmergencyMessage, "id" | "timestamp" | "read">) => void;
+  sendMessage: (msg: Omit<EmergencyMessage, "id" | "timestamp" | "read" | "replies">) => void;
   markMessageRead: (id: string) => void;
+  replyToMessage: (msgId: string, reply: string) => void;
   unreadCount: number;
 }
 
@@ -51,12 +59,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const sendMessage = useCallback(
-    (msg: Omit<EmergencyMessage, "id" | "timestamp" | "read">) => {
+    (msg: Omit<EmergencyMessage, "id" | "timestamp" | "read" | "replies">) => {
       const newMsg: EmergencyMessage = {
         ...msg,
         id: crypto.randomUUID(),
         timestamp: new Date(),
         read: false,
+        replies: [],
       };
       setMessages((prev) => [newMsg, ...prev]);
       toast.success("🚨 Emergency message sent to office!");
@@ -70,11 +79,25 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     );
   }, []);
 
+  const replyToMessage = useCallback((msgId: string, replyText: string) => {
+    const newReply: MessageReply = {
+      id: crypto.randomUUID(),
+      message: replyText,
+      timestamp: new Date(),
+    };
+    setMessages((prev) =>
+      prev.map((m) =>
+        m.id === msgId ? { ...m, replies: [...m.replies, newReply] } : m
+      )
+    );
+    toast.success("Reply sent to worker!");
+  }, []);
+
   const unreadCount = messages.filter((m) => !m.read).length;
 
   return (
     <AppContext.Provider
-      value={{ alerts, addAlert, resolveAlert, messages, sendMessage, markMessageRead, unreadCount }}
+      value={{ alerts, addAlert, resolveAlert, messages, sendMessage, markMessageRead, replyToMessage, unreadCount }}
     >
       {children}
     </AppContext.Provider>

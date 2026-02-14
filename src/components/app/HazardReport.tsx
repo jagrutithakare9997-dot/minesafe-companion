@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { AlertTriangle, Camera, Send, CheckCircle } from "lucide-react";
+import { useState, useRef } from "react";
+import { AlertTriangle, Camera, Send, CheckCircle, X, ImageIcon } from "lucide-react";
 
 interface HazardReportProps {
   onSubmit: (data: { category: string; description: string; severity: string }) => void;
@@ -27,6 +27,25 @@ const HazardReport = ({ onSubmit }: HazardReportProps) => {
   const [description, setDescription] = useState("");
   const [severity, setSeverity] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedFileName, setSelectedFileName] = useState<string>("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) return;
+    setSelectedFileName(file.name);
+    const reader = new FileReader();
+    reader.onloadend = () => setSelectedImage(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const removeImage = () => {
+    setSelectedImage(null);
+    setSelectedFileName("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   const handleSubmit = () => {
     if (!category || !description || !severity) return;
@@ -37,6 +56,7 @@ const HazardReport = ({ onSubmit }: HazardReportProps) => {
       setCategory("");
       setDescription("");
       setSeverity("");
+      removeImage();
     }, 3000);
   };
 
@@ -122,11 +142,41 @@ const HazardReport = ({ onSubmit }: HazardReportProps) => {
         />
       </div>
 
-      {/* Photo Button */}
-      <button className="mb-5 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-card p-4 text-sm text-muted-foreground transition-all hover:border-primary/40 hover:text-foreground">
-        <Camera className="h-4 w-4" />
-        Attach Photo (Optional)
-      </button>
+      {/* Photo Upload */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onChange={handleImageSelect}
+        className="hidden"
+      />
+
+      {selectedImage ? (
+        <div className="mb-5 rounded-lg border border-border bg-card overflow-hidden">
+          <div className="relative">
+            <img src={selectedImage} alt="Hazard" className="w-full max-h-48 object-cover" />
+            <button
+              onClick={removeImage}
+              className="absolute top-2 right-2 rounded-full bg-background/80 p-1.5 text-foreground hover:bg-background transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-2 border-t border-border">
+            <ImageIcon className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="text-xs text-muted-foreground truncate">{selectedFileName}</span>
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          className="mb-5 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-card p-4 text-sm text-muted-foreground transition-all hover:border-primary/40 hover:text-foreground"
+        >
+          <Camera className="h-4 w-4" />
+          Attach Photo / Take Picture
+        </button>
+      )}
 
       {/* Submit */}
       <button
