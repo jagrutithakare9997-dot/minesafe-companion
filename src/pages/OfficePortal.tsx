@@ -1,9 +1,12 @@
-import { useState } from "react";
-import { Shield, BarChart3, MessageSquare, ArrowLeft, Bell } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Shield, BarChart3, MessageSquare, ArrowLeft, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import CommandCenter from "@/components/app/CommandCenter";
 import OfficeMessages from "@/components/app/OfficeMessages";
+import OfficeLogin from "@/pages/OfficeLogin";
 import { useAppContext } from "@/context/AppContext";
+import { supabase } from "@/integrations/supabase/client";
+import type { Session } from "@supabase/supabase-js";
 
 type Screen = "command" | "messages";
 
@@ -11,6 +14,37 @@ const OfficePortal = () => {
   const navigate = useNavigate();
   const { alerts, resolveAlert, unreadCount } = useAppContext();
   const [activeScreen, setActiveScreen] = useState<Screen>("command");
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setLoading(false);
+    });
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setSession(null);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <span className="h-8 w-8 animate-spin rounded-full border-4 border-accent border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!session) {
+    return <OfficeLogin onLogin={() => {}} />;
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -26,7 +60,7 @@ const OfficePortal = () => {
               <span className="text-xs font-normal text-muted-foreground ml-2">Office</span>
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {unreadCount > 0 && (
               <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1.5 text-[10px] font-bold text-destructive-foreground">
                 {unreadCount}
@@ -34,6 +68,9 @@ const OfficePortal = () => {
             )}
             <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse-glow" />
             <span className="text-xs text-muted-foreground">Live</span>
+            <button onClick={handleLogout} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors" title="Sign Out">
+              <LogOut className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </header>

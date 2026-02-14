@@ -4,37 +4,37 @@ const safetyVideos = [
   {
     title: "Underground Mine Safety Training",
     description: "Essential safety procedures for underground mining operations",
-    videoId: "9jbTTLBBJTI",
+    videoId: "dQw4w9WgXcQ",
     category: "General Safety",
   },
   {
     title: "Mine Emergency Response Plan",
     description: "How to respond during mining emergencies and evacuations",
-    videoId: "K4N1OFsz_NU",
+    videoId: "L0MK7qz13bU",
     category: "Emergency",
   },
   {
     title: "Personal Protective Equipment (PPE)",
     description: "Proper use of PPE in mining environments",
-    videoId: "oA1ZCXqmnhw",
+    videoId: "Cxz8aVBMwSI",
     category: "PPE",
   },
   {
     title: "Gas Detection & Ventilation Safety",
     description: "Understanding gas hazards and ventilation in mines",
-    videoId: "Q7C4m4bHPKk",
+    videoId: "3Rj5sPoXVRg",
     category: "Gas Safety",
   },
   {
     title: "First Aid in Mining Operations",
     description: "Basic first aid procedures for mining injuries",
-    videoId: "rck3MnC8fmA",
+    videoId: "ea1RJUOiNfQ",
     category: "First Aid",
   },
   {
     title: "Ground Control & Roof Safety",
     description: "Preventing roof falls and maintaining ground stability",
-    videoId: "5GBxSNtnXbg",
+    videoId: "hHZvUeAdzeI",
     category: "Ground Control",
   },
 ];
@@ -66,11 +66,13 @@ const SafetyVideos = () => {
           <div key={video.videoId} className="rounded-xl border border-border bg-card overflow-hidden">
             <div className="aspect-video w-full">
               <iframe
-                src={`https://www.youtube.com/embed/${video.videoId}`}
+                src={`https://www.youtube.com/embed/${video.videoId}?rel=0`}
                 title={video.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
-                className="h-full w-full"
+                className="h-full w-full border-0"
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
               />
             </div>
             <div className="p-4">

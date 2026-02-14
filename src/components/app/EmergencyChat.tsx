@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Send, MessageSquare, MapPin, AlertTriangle } from "lucide-react";
+import { Send, MessageSquare, MapPin, AlertTriangle, Reply } from "lucide-react";
 import { useAppContext } from "@/context/AppContext";
 
 const quickMessages = [
@@ -97,7 +97,7 @@ const EmergencyChat = () => {
         </div>
       )}
 
-      {/* Sent history */}
+      {/* Sent history with replies */}
       {myMessages.length > 0 && (
         <>
           <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 block">
@@ -110,6 +110,23 @@ const EmergencyChat = () => {
                 <p className="text-[10px] text-muted-foreground mt-1">
                   {m.timestamp.toLocaleTimeString()} • {m.location}
                 </p>
+                {/* Show office replies */}
+                {m.replies && m.replies.length > 0 && (
+                  <div className="mt-2 space-y-1.5 border-t border-border pt-2">
+                    {m.replies.map((reply) => (
+                      <div key={reply.id} className="flex items-start gap-2 rounded-md bg-accent/10 p-2">
+                        <Reply className="h-3.5 w-3.5 text-accent shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-[10px] font-semibold text-accent">Office Reply</span>
+                          <p className="text-xs text-foreground">{reply.message}</p>
+                          <span className="text-[9px] text-muted-foreground">
+                            {reply.timestamp.toLocaleTimeString()}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
