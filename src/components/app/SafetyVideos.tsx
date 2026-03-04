@@ -2,40 +2,40 @@ import { PlayCircle, Shield } from "lucide-react";
 
 const safetyVideos = [
   {
-    title: "Underground Coal Mine Safety",
-    description: "MSHA training on safety hazards in underground coal mines",
-    videoId: "RY0tMFpOEb8",
+    title: "MSHA Annual Refresher Training",
+    description: "Complete MSHA annual refresher training for mine workers",
+    videoId: "urhSl6Wb6b4",
     category: "General Safety",
   },
   {
-    title: "Mine Rescue & Emergency Response",
-    description: "Mine rescue team training and emergency evacuation procedures",
-    videoId: "quZCasGGfaQ",
-    category: "Emergency",
+    title: "Underground Mining Safety Basics",
+    description: "Essential safety procedures for underground mining operations",
+    videoId: "RDOxM5F2oWQ",
+    category: "Underground",
   },
   {
-    title: "Mining PPE - Protect Yourself Underground",
-    description: "Proper use of personal protective equipment in mining operations",
-    videoId: "6TQjYXqGPk8",
+    title: "Mining Hazard Awareness",
+    description: "Identifying and avoiding common hazards in mining environments",
+    videoId: "K9A3WzVno_c",
+    category: "Hazards",
+  },
+  {
+    title: "PPE for Mine Workers",
+    description: "Proper use and inspection of personal protective equipment",
+    videoId: "0T8GrXoSVCE",
     category: "PPE",
   },
   {
-    title: "Methane & Gas Detection in Mines",
-    description: "Detecting dangerous gases and proper ventilation in underground mines",
-    videoId: "SYwFSsROas0",
-    category: "Gas Safety",
+    title: "Mine Emergency Preparedness",
+    description: "How to prepare for and respond to mine emergencies",
+    videoId: "4JFezNSMbiY",
+    category: "Emergency",
   },
   {
-    title: "Mining First Aid & Injury Response",
-    description: "First aid techniques specific to mining accidents and injuries",
-    videoId: "zMEHbFCJMvs",
-    category: "First Aid",
-  },
-  {
-    title: "Ground Control & Roof Fall Prevention",
-    description: "Preventing roof falls and ground failure in underground mines",
-    videoId: "p1tMWa3CXHM",
-    category: "Ground Control",
+    title: "Electrical Safety in Mining",
+    description: "Electrical hazard prevention and lockout/tagout procedures",
+    videoId: "sNOihGaSxnE",
+    category: "Electrical",
   },
 ];
 
@@ -66,7 +66,7 @@ const SafetyVideos = () => {
           <div key={video.videoId} className="rounded-xl border border-border bg-card overflow-hidden">
             <div className="aspect-video w-full">
               <iframe
-                src={`https://www.youtube.com/embed/${video.videoId}?rel=0`}
+                src={`https://www.youtube-nocookie.com/embed/${video.videoId}?rel=0&modestbranding=1`}
                 title={video.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
