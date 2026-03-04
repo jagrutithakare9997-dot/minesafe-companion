@@ -2,40 +2,40 @@ import { PlayCircle, Shield } from "lucide-react";
 
 const safetyVideos = [
   {
-    title: "MSHA Annual Refresher Training",
-    description: "Complete MSHA annual refresher training for mine workers",
-    videoId: "urhSl6Wb6b4",
+    title: "MSHA Annual Refresher Training Playlist",
+    description: "Official refresher modules for active mine workers",
+    embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PLeLyvcaRYC3E2wi1A4cwIKHxpnFQL3FUr",
+    category: "MSHA",
+  },
+  {
+    title: "Mine Safety Training Videos Playlist",
+    description: "Mining hazard awareness, prevention, and safe work practices",
+    embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PLB3JRydr2LBWmZ0n54wDrJHqzlsaf4bF0",
     category: "General Safety",
   },
   {
-    title: "Underground Mining Safety Basics",
-    description: "Essential safety procedures for underground mining operations",
-    videoId: "RDOxM5F2oWQ",
-    category: "Underground",
+    title: "MSHA New Miner Training Playlist",
+    description: "Starter training content for new mining workers",
+    embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PL4mxLIRYOwt72Yx4Lj0wJhRPz1GdzHhqk",
+    category: "New Miner",
   },
   {
-    title: "Mining Hazard Awareness",
-    description: "Identifying and avoiding common hazards in mining environments",
-    videoId: "K9A3WzVno_c",
-    category: "Hazards",
+    title: "MSHA Part 46 & 48 Training Playlist",
+    description: "Part 46/48 mine safety course content and drills",
+    embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PLoNdAoEF0xpiVe5WiPquZc33iccJEfi3J",
+    category: "Compliance",
   },
   {
-    title: "PPE for Mine Workers",
-    description: "Proper use and inspection of personal protective equipment",
-    videoId: "0T8GrXoSVCE",
-    category: "PPE",
+    title: "MSHA Annual Refresher (Single Session)",
+    description: "Long-form annual refresher training session",
+    embedUrl: "https://www.youtube-nocookie.com/embed/urhSl6Wb6b4?rel=0&modestbranding=1",
+    category: "Refresher",
   },
   {
-    title: "Mine Emergency Preparedness",
-    description: "How to prepare for and respond to mine emergencies",
-    videoId: "4JFezNSMbiY",
+    title: "Mining Rescue & Emergency Response",
+    description: "Emergency response principles for underground incidents",
+    embedUrl: "https://www.youtube-nocookie.com/embed/quZCasGGfaQ?rel=0&modestbranding=1",
     category: "Emergency",
-  },
-  {
-    title: "Electrical Safety in Mining",
-    description: "Electrical hazard prevention and lockout/tagout procedures",
-    videoId: "sNOihGaSxnE",
-    category: "Electrical",
   },
 ];
 
@@ -63,10 +63,10 @@ const SafetyVideos = () => {
 
       <div className="space-y-5">
         {safetyVideos.map((video) => (
-          <div key={video.videoId} className="rounded-xl border border-border bg-card overflow-hidden">
+          <div key={video.title} className="rounded-xl border border-border bg-card overflow-hidden">
             <div className="aspect-video w-full">
               <iframe
-                src={`https://www.youtube-nocookie.com/embed/${video.videoId}?rel=0&modestbranding=1`}
+                src={video.embedUrl}
                 title={video.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
